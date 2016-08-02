@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>VDPM by vitadev</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">VDPM</h1>
+      <h2 class="project-tagline">Mini build system &amp; package manager for $VITASDK</h2>
+      <a href="https://github.com/vitadev/vdpm" class="btn">View on GitHub</a>
+      <a href="https://github.com/vitadev/vdpm/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/vitadev/vdpm/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="vitadev-package-manager" class="anchor" href="#vitadev-package-manager" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Vitadev Package manager</h1>
+
+<p>VDPM is a project which aims on getting common libraries building for the PS Vita using the
+<a href="https://github.com/vitasdk">vitasdk toolchain</a>. It was based off the original idea of xerpi's
+vita_portlibs.</p>
+
+<h1>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h1>
+
+<h2>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting started</h2>
+
+<h3>
+<a id="mac--linux" class="anchor" href="#mac--linux" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Mac &amp; Linux</h3>
+
+<p>First install cmake, you can get this from <a href="http://brew.sh">Homebrew</a> on Mac (<code>brew install cmake</code>), 
+and from your distro's package manager on Linux (on ubuntu: <code>sudo apt-get install cmake</code>).</p>
+
+<div class="highlight highlight-source-shell"><pre>git clone https://github.com/vitadev/vdpm
+<span class="pl-c1">cd</span> vdpm
+cp config.sample config
+./bootstrap-vitasdk.sh <span class="pl-c"># skip this step if you already have vitasdk installed</span>
+                       <span class="pl-c"># to /usr/local/vitasdk and have $VITASDK set</span>
+<span class="pl-k">export</span> VITASDK=/usr/local/vitasdk <span class="pl-c"># define $VITASDK if you havent already</span>
+<span class="pl-k">export</span> PATH=<span class="pl-smi">$VITASDK</span>/bin:<span class="pl-smi">$PATH</span> <span class="pl-c"># add vitasdk tool to $PATH if you havent already</span>
+./install-all.sh</pre></div>
+
+<h3>
+<a id="windows-msys2" class="anchor" href="#windows-msys2" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Windows (msys2)</h3>
+
+<div class="highlight highlight-source-shell"><pre>pacman -Syu
+pacman -S git
+git clone https://github.com/vitadev/vdpm
+<span class="pl-c1">cd</span> vdpm
+cp config.sample config
+./bootstrap-vitasdk.sh <span class="pl-c"># skip this step if you already have vitasdk installed</span>
+                       <span class="pl-c"># to /usr/local/vitasdk and have $VITASDK set</span>
+<span class="pl-k">export</span> VITASDK=/usr/local/vitasdk <span class="pl-c"># define $VITASDK if you havent already</span>
+<span class="pl-k">export</span> PATH=<span class="pl-smi">$VITASDK</span>/bin:<span class="pl-smi">$PATH</span> <span class="pl-c"># add vitasdk tool to $PATH if you havent already</span>
+./install-all.sh</pre></div>
+
+<h2>
+<a id="vdpm" class="anchor" href="#vdpm" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>vdpm</h2>
+
+<p>vdpm helps with building libraries
+and software from their package description (in <code>pkg/*</code>).</p>
+
+<pre><code>Usage: vdpm [-iudlLx] [pkg pkg ..]
+ -x : execute or enter into the vdpm shell
+ -u : upgrade package
+ -i : install package (.tgz or pkgname)
+ -d : deinstall package
+ -c : clean package (-ci to clean + install)
+ -C : check checksum of pkg files (u=unmodified, m=modified)
+ -r : remove devel/man/doc files to _remove/
+      -r: list, -ri: reinstall, -rm: remove
+ -s : search package by keyword
+ -l : list installed packages or pkg files
+ -L : list all available packages (-LL for description)
+ -f : find missing libraries
+      -fi: install, -fl: list, -fd: remove
+ -p : patch package
+ -P : unpatch package
+</code></pre>
+
+<h2>
+<a id="config" class="anchor" href="#config" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Config</h2>
+
+<p>It requires a config file. For most users <code>cp config.sample config</code> will work fine.</p>
+
+<h1>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributing</h1>
+
+<p>Contributions are welcome to both the package repo, documentation or the package manager itself.</p>
+
+<h2>
+<a id="packages" class="anchor" href="#packages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Packages</h2>
+
+<p>The format for packages are as follows.</p>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-c"># required</span>
+URL=http://example.com/testpkg-0.3.2.tar.gz <span class="pl-c"># direct source url</span>
+TYPE=tar <span class="pl-c"># tar/git</span>
+DESC=<span class="pl-s"><span class="pl-pds">"</span>a test package for vdpm<span class="pl-pds">"</span></span> <span class="pl-c"># short description for the package</span>
+<span class="pl-c"># optional</span>
+TARGET=<span class="pl-s"><span class="pl-pds">"</span>libtest.a<span class="pl-pds">"</span></span> <span class="pl-c"># custom target for make</span>
+PKGINSTALL=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-smi">${MAKE}</span> install-libtest.a<span class="pl-pds">"</span></span> <span class="pl-c"># custom install command</span>
+USER_CFGARGS=<span class="pl-s"><span class="pl-pds">"</span>--disable-shared --disable-threadsafe<span class="pl-pds">"</span></span> <span class="pl-c"># configure arguments</span>
+CFLAGS=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-smi">${CFLAGS}</span> -O3<span class="pl-pds">"</span></span> <span class="pl-c"># CFLAGS (must include ${CFLAGS} unless the intention is to replace computed CFLAGS)</span></pre></div>
+
+<p>They need to be placed in <code>pkg/</code> with their filename matching the extracted folder/git clone folder of the source.</p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
+
+<p>LGPL v2.1 or later.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/vitadev/vdpm">VDPM</a> is maintained by <a href="https://github.com/vitadev">vitadev</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
