@@ -1,0 +1,10 @@
+URL=https://github.com/ireallydontexist/VTinyGL
+TYPE=git
+DESC="VTinyGL port to vitasdk"
+# support weird dir structure
+DEPS="libvita2d libpng freetype"
+# support weird dir structure
+PRECONFIGURE="cd libTinyGL"
+POSTCONFIGURE="cd -"
+PREINSTALL="cd libTinyGL"
+POSTINSTALL="cd -"
